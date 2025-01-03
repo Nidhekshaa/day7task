@@ -17,13 +17,29 @@ export const create = async(req,res)=>{
         res.status(500).json({error:"internal server error"});
     }
 }
+// export const fetch = async(req,res)=>{
+//     try{
+//         const users = await user.find();
+//         if(users.length === 0){
+//             return res.status(404).json({message:"no user found"});
+//         }
+//         res.status(200).json({users});
+//     }
+//     catch(err){
+//         res.status(500).json({error:"internel server error"})
+//     }
+// }
+
+//fetch the data by its ID
 export const fetch = async(req,res)=>{
     try{
-        const users = await user.find();
+        const id=req.params.id;
+        const users = await user.findOne({_id:id});
         if(users.length === 0){
             return res.status(404).json({message:"no user found"});
         }
-        res.status(200).json({users});
+        const updateUser=await user.findById(id,req.body,{new:true});
+        res.status(200).json({updateUser});
     }
     catch(err){
         res.status(500).json({error:"internel server error"})
